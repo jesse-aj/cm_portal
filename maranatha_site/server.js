@@ -209,7 +209,9 @@ const dbConfig = {
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_NAME || 'cm_portal',
-  ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : undefined
+  ssl: (process.env.DB_SSL === 'true' || (process.env.DB_HOST && !process.env.DB_HOST.includes('localhost') && !process.env.DB_HOST.includes('127.0.0.1')))
+    ? { rejectUnauthorized: false }
+    : undefined
 };
 const sessions = new Map();
 
@@ -264,8 +266,10 @@ async function withDatabase(callback) {
 async function initDB() {
   const serverConnection = await mysql.createConnection({
     host: dbConfig.host,
+    port: dbConfig.port,
     user: dbConfig.user,
-    password: dbConfig.password
+    password: dbConfig.password,
+    ssl: dbConfig.ssl
   });
   try {
     await serverConnection.query(`CREATE DATABASE IF NOT EXISTS \`${dbConfig.database}\``);
@@ -809,7 +813,7 @@ async function start() {
     console.error(`Database unavailable: ${error.message}`);
     console.error('Start MySQL and verify DB settings before using database features.');
   }
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  app.listen(PORT, '0.0.0.0', () => console.log(`Server running on port ${PORT}`));
 }
 
 start();
