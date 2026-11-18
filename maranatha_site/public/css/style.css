@@ -1,0 +1,362 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+:root {
+    --navy-950: #071126;
+    --navy-900: #0B1938;
+    --navy-800: #132A5E;
+    --navy-700: #1D3B7A;
+    --gold-500: #E5A000;
+    --gold-400: #F5B800;
+    --gold-100: #FEF7E0;
+    --ivory-50: #FAF8F5;
+    --ivory-100: #F3EFEA;
+    --ivory-200: #E6E1D6;
+    --stone-300: #D5CFC2;
+    --ink-900: #111827;
+    --ink-700: #374151;
+    --ink-500: #6B7280;
+    --white: #FFFFFF;
+    --danger: #B91C1C;
+    --success: #15803D;
+
+    --font-serif: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    min-height: 100vh;
+    font-family: var(--font-sans);
+    background-color: var(--ivory-50);
+    color: var(--ink-900);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* =========================================================
+   EDITORIAL SPLIT SHELL (Landing, Login, Register)
+   ========================================================= */
+.editorial-shell {
+    display: grid;
+    grid-template-columns: 1.08fr 1fr;
+    min-height: 100vh;
+}
+
+/* Left Panel — Deep Royal Navy Brand Showcase */
+.brand-panel {
+    background-color: var(--navy-900);
+    background-image:
+        radial-gradient(circle at 18% 22%, rgba(245, 184, 0, 0.10) 0%, transparent 48%),
+        radial-gradient(circle at 85% 85%, rgba(29, 59, 122, 0.55) 0%, transparent 55%),
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+    color: var(--white);
+    padding: 56px 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.brand-top {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.brand-crest {
+    width: 54px;
+    height: 54px;
+    object-fit: contain;
+    background: var(--white);
+    padding: 4px;
+    border-radius: 50%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.brand-top-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-400);
+}
+
+.brand-assembly {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.92);
+    margin-top: 2px;
+}
+
+.brand-Statement {
+    max-width: 520px;
+    margin: auto 0;
+    padding: 40px 0;
+}
+
+.scripture-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold-400);
+    padding: 6px 12px;
+    border: 1px solid rgba(245, 184, 0, 0.35);
+    border-radius: 999px;
+    margin-bottom: 24px;
+    background: rgba(245, 184, 0, 0.06);
+}
+
+.editorial-quote {
+    font-family: var(--font-sans);
+    font-size: clamp(28px, 3.1vw, 40px);
+    font-weight: 700;
+    line-height: 1.22;
+    letter-spacing: -0.025em;
+    color: var(--white);
+    margin-bottom: 20px;
+}
+
+.editorial-quote em {
+    color: var(--gold-400);
+    font-style: normal;
+}
+
+.editorial-sub {
+    font-size: 15px;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.72);
+    max-width: 440px;
+}
+
+.brand-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.55);
+    font-family: var(--font-mono);
+}
+
+/* Right Panel — Warm Ivory Editorial Canvas */
+.canvas-panel {
+    background-color: var(--ivory-50);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 56px 48px;
+}
+
+.canvas-card {
+    width: 100%;
+    max-width: 440px;
+}
+
+.canvas-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--navy-700);
+    margin-bottom: 10px;
+    display: block;
+}
+
+.canvas-title {
+    font-family: var(--font-sans);
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.18;
+    color: var(--navy-900);
+    margin-bottom: 10px;
+}
+
+.canvas-description {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink-500);
+    margin-bottom: 32px;
+}
+
+/* Feature Index List on Landing Page */
+.editorial-pillars {
+    border-top: 1px solid var(--ivory-200);
+    margin-bottom: 32px;
+}
+
+.pillar-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--ivory-200);
+}
+
+.pillar-num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--gold-500);
+    font-weight: 600;
+    padding-top: 2px;
+}
+
+.pillar-body h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--navy-900);
+    margin-bottom: 3px;
+}
+
+.pillar-body p {
+    font-size: 13.5px;
+    color: var(--ink-500);
+    line-height: 1.45;
+}
+
+/* Action Buttons */
+.landing-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.btn-primary,
+.btn-secondary,
+form button[type="submit"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 24px;
+    border-radius: 8px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.18s ease;
+}
+
+.btn-primary,
+form button[type="submit"] {
+    background-color: var(--navy-900);
+    color: var(--white);
+    border: 1px solid var(--navy-900);
+    width: 100%;
+}
+
+.btn-primary:hover,
+form button[type="submit"]:hover {
+    background-color: var(--navy-800);
+    border-color: var(--navy-800);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(11, 25, 56, 0.16);
+}
+
+.btn-secondary {
+    background-color: var(--white);
+    color: var(--navy-900);
+    border: 1px solid var(--stone-300);
+    width: 100%;
+}
+
+.btn-secondary:hover {
+    background-color: var(--ivory-100);
+    border-color: var(--navy-900);
+}
+
+/* Forms (Login & Register) */
+.form-group {
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--navy-900);
+    margin-bottom: 7px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--stone-300);
+    background-color: var(--white);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: var(--ink-900);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-group input::placeholder {
+    color: #9CA3AF;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--navy-800);
+    box-shadow: 0 0 0 3px rgba(19, 42, 94, 0.10);
+}
+
+.form-links {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--ivory-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13.5px;
+    color: var(--ink-500);
+}
+
+.form-links a {
+    color: var(--navy-900);
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold-500);
+    padding-bottom: 1px;
+}
+
+.form-links a:hover {
+    color: var(--navy-700);
+}
+
+@media (max-width: 900px) {
+    .editorial-shell {
+        grid-template-columns: 1fr;
+    }
+    .brand-panel {
+        padding: 36px 28px;
+    }
+    .canvas-panel {
+        padding: 40px 24px;
+    }
+}

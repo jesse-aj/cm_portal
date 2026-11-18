@@ -1,0 +1,6 @@
+node_modules/
+.env
+.DS_Store
+npm-debug.log*
+maranatha_site/node_modules/
+maranatha_site/.env

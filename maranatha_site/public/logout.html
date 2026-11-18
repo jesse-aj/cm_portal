@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Logout - Admin Dashboard</title>
+    <link rel="stylesheet" href="css/logout.css">
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f4f4f4; display:flex; justify-content:center; align-items:center; height:100vh;">
+
+    <div style="background-color:#fff; padding:30px; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.1); text-align:center;">
+        <h2 style="color:#1e293b; margin-bottom:20px;">Are you sure you want to logout?</h2>
+
+        <div style="display:flex; justify-content:center; gap:15px;">
+            <button onclick="logout()" style="padding:10px 20px; border:none; border-radius:5px; background-color:#2563eb; color:white; cursor:pointer; font-weight:bold;">Yes, Logout</button>
+            <button onclick="goBack()" style="padding:10px 20px; border:none; border-radius:5px; background-color:#e5e5e5; color:#111827; cursor:pointer; font-weight:bold;">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        function logout() {
+            fetch('/logout', { method: 'POST' })
+                .finally(() => {
+                    alert("You have been logged out.");
+                    window.location.href = "login.html";
+                });
+        }
+
+        function goBack() {
+            // Redirect back to dashboard
+            window.location.href = "admin.html";
+        }
+    </script>
+
+</body>
+</html>

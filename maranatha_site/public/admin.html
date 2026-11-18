@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Command Center — Maranathan &amp; English CM</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<div class="dashboard">
+
+    <!-- Deep Royal Navy Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <img src="images/logo.png" alt="Church of Pentecost Logo" class="sidebar-logo">
+            <div class="sidebar-brand-text">
+                <h2 class="logo">CM Admin</h2>
+                <span>Executive Console</span>
+            </div>
+        </div>
+
+        <div class="nav-group-label">Ministry Operations</div>
+        <ul class="nav">
+            <li class="active" data-section="dashboard">Overview &amp; Metrics</li>
+            <li data-section="feedback">All Correspondence</li>
+            <li data-section="hymns">Sunday School Hymns</li>
+            <li data-section="categories">Categories</li>
+            <li data-section="reports">Ministry Reports</li>
+            <li data-section="settings">Account Settings</li>
+            <li id="logoutBtn">Sign Out →</li>
+        </ul>
+    </aside>
+
+    <!-- Warm Ivory Main Content -->
+    <main class="main-content">
+
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="section">
+            <header class="topbar">
+                <div>
+                    <span class="topbar-eyebrow">Maranathan &amp; English Children's Ministry</span>
+                    <h1>Executive Overview</h1>
+                </div>
+            </header>
+            <section class="stats">
+                <div class="stat-card">
+                    <h3>Total Correspondence</h3>
+                    <p id="totalFeedback">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Suggestions</h3>
+                    <p id="suggestions">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Concerns</h3>
+                    <p id="concerns">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Appreciations</h3>
+                    <p id="appreciations">0</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- All Feedback Section -->
+        <div id="feedback" class="section" style="display:none;">
+            <header class="topbar">
+                <div>
+                    <span class="topbar-eyebrow">Member Correspondence</span>
+                    <h1>All Feedback Received</h1>
+                </div>
+            </header>
+            <section class="feedback-section">
+                <div class="section-header">
+                    <h2>Correspondence Ledger</h2>
+                    <div class="actions">
+                        <button class="btn print" onclick="location.reload()">Refresh</button>
+                        <button class="btn print" onclick="printFeedback()">Print Ledger</button>
+                        <button class="btn save" onclick="saveFeedback()">Export CSV</button>
+                        <button class="btn danger" onclick="clearFeedback()">Clear All</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Submitted By</th>
+                                <th>Category</th>
+                                <th>Message</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Official Reply</th>
+                            </tr>
+                        </thead>
+                        <tbody id="feedbackTable">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <!-- Sunday School Hymns & Karaoke Section -->
+        <div id="hymns" class="section" style="display:none;">
+            <header class="topbar">
+                <div>
+                    <span class="topbar-eyebrow">Praise &amp; Worship Ministry</span>
+                    <h1>Sunday School Hymn &amp; Karaoke Manager</h1>
+                </div>
+            </header>
+            <section class="feedback-section">
+                <div class="section-header">
+                    <h2>Hymn Catalog &amp; Audio Tracks</h2>
+                    <div class="actions">
+                        <button class="btn print" onclick="loadAdminSongs()">Refresh</button>
+                        <button class="btn" onclick="openHymnModal()">+ Add New Hymn</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Hymn Title</th>
+                                <th>Vocal Track (Sing-Along)</th>
+                                <th>Instrumental (Karaoke)</th>
+                                <th>Lyrics Status</th>
+                                <th>Audio Preview</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="hymnsTableBody">
+                            <tr><td colspan="6" style="text-align:center; padding:28px; color:var(--ink-500);">Loading hymns…</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <!-- Categories Section -->
+        <div id="categories" class="section" style="display:none;">
+            <header class="topbar">
+                <div>
+                    <span class="topbar-eyebrow">Taxonomy</span>
+                    <h1>Feedback Categories</h1>
+                </div>
+            </header>
+
+            <section class="categories-section">
+                <div class="add-category">
+                    <input type="text" placeholder="Enter new category title..." id="newCategory">
+                    <button class="btn" onclick="addCategory()">Add Category</button>
+                </div>
+
+                <div class="table-container">
+                    <table id="categoriesTable">
+                        <thead>
+                            <tr>
+                                <th>Category Name</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Improvement Suggestion</td>
+                                <td>
+                                    <button class="btn print" onclick="editCategory(this)">Rename</button>
+                                    <button class="btn danger" onclick="deleteCategory(this)">Remove</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Concern</td>
+                                <td>
+                                    <button class="btn print" onclick="editCategory(this)">Rename</button>
+                                    <button class="btn danger" onclick="deleteCategory(this)">Remove</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Appreciation</td>
+                                <td>
+                                    <button class="btn print" onclick="editCategory(this)">Rename</button>
+                                    <button class="btn danger" onclick="deleteCategory(this)">Remove</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <!-- Reports Section -->
+        <div id="reports" class="section" style="display:none;">
+            <header class="topbar">
+                <div>
+                    <span class="topbar-eyebrow">Records &amp; Summaries</span>
+                    <h1>Ministry Reports</h1>
+                </div>
+            </header>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Report ID</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>R001</code></td>
+                            <td>Monthly Attendance</td>
+                            <td>Attendance</td>
+                            <td><span class="admin-pill pill-replied">Completed</span></td>
+                            <td>2026-02-10</td>
+                        </tr>
+                        <tr>
+                            <td><code>R002</code></td>
+                            <td>Feedback Summary</td>
+                            <td>Feedback</td>
+                            <td><span class="admin-pill pill-pending">Pending</span></td>
+                            <td>2026-02-12</td>
+                        </tr>
+                        <tr>
+                            <td><code>R003</code></td>
+                            <td>New Members</td>
+                            <td>Membership</td>
+                            <td><span class="admin-pill pill-replied">Completed</span></td>
+                            <td>2026-02-11</td>
+                        </tr>
+                        <tr>
+                            <td><code>R004</code></td>
+                            <td>Baptism Report</td>
+                            <td>Soul Winning</td>
+                            <td><span class="admin-pill pill-pending">Pending</span></td>
+                            <td>2026-02-13</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Settings Section -->
+        <div id="settings" class="section" style="display:none;">
+            <header class="topbar">
+                <div>
+                    <span class="topbar-eyebrow">Administration</span>
+                    <h1>Account &amp; Portal Settings</h1>
+                </div>
+            </header>
+
+            <div class="settings-grid">
+                <section class="settings-section">
+                    <h2>Administrator Profile</h2>
+                    <form>
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" placeholder="Admin">
+
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="admin@example.com">
+
+                        <button type="submit" class="btn">Update Profile</button>
+                    </form>
+                </section>
+
+                <section class="settings-section">
+                    <h2>Security &amp; Password</h2>
+                    <form>
+                        <label for="current-password">Current Password</label>
+                        <input type="password" id="current-password" name="current-password">
+
+                        <label for="new-password">New Password</label>
+                        <input type="password" id="new-password" name="new-password">
+
+                        <label for="confirm-password">Confirm New Password</label>
+                        <input type="password" id="confirm-password" name="confirm-password">
+
+                        <button type="submit" class="btn">Update Password</button>
+                    </form>
+                </section>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<!-- Hymn Add / Edit Modal -->
+<div id="hymnModalBackdrop" class="hymn-modal-backdrop" onclick="if(event.target===this) closeHymnModal()">
+    <div class="hymn-modal">
+        <div class="hymn-modal-header">
+            <h3 id="hymnModalTitle">Add Sunday School Hymn</h3>
+            <button type="button" class="hymn-modal-close" onclick="closeHymnModal()">&times;</button>
+        </div>
+        <form id="hymnForm" enctype="multipart/form-data">
+            <div class="hymn-modal-body">
+                <input type="hidden" id="hymnId" name="id">
+
+                <div class="hymn-form-group">
+                    <label for="hymnTitleInput">Hymn Title *</label>
+                    <input type="text" id="hymnTitleInput" name="title" required placeholder="e.g. Jesus Loves Me">
+                </div>
+
+                <div class="hymn-form-group">
+                    <label for="hymnVocalInput">Vocal Audio Track (Sing-Along Mode)</label>
+                    <span class="form-sub">Upload an audio file (.mp3, .wav, .m4a, .aac) or provide a URL below.</span>
+                    <div class="hymn-file-drop">
+                        <input type="file" id="hymnVocalInput" name="vocal" accept="audio/*">
+                        <span id="hymnCurrentVocal" class="hymn-current-file"></span>
+                    </div>
+                    <input type="text" id="hymnVocalUrlInput" name="vocal_audio_url" placeholder="Or enter direct audio URL (optional)..." style="margin-top: 8px;">
+                </div>
+
+                <div class="hymn-form-group">
+                    <label for="hymnInstrumentalInput">Instrumental Backing Track (Karaoke Mode)</label>
+                    <span class="form-sub">Upload an audio backing track without vocals or provide a URL below.</span>
+                    <div class="hymn-file-drop">
+                        <input type="file" id="hymnInstrumentalInput" name="instrumental" accept="audio/*">
+                        <span id="hymnCurrentInstrumental" class="hymn-current-file"></span>
+                    </div>
+                    <input type="text" id="hymnInstrumentalUrlInput" name="instrumental_audio_url" placeholder="Or enter direct audio URL (optional)..." style="margin-top: 8px;">
+                </div>
+
+                <div class="hymn-form-group">
+                    <div style="display:flex; justify-content:space-between; align-items:baseline;">
+                        <label for="hymnLyricsInput">Hymn Lyrics &amp; Synchronization</label>
+                        <button type="button" class="btn print" style="font-size:11px; padding:4px 8px;" onclick="insertTimestampSample()">Insert Sample Template</button>
+                    </div>
+                    <span class="form-sub">Upload a <strong>.lrc file</strong> directly from your device, or paste formatted LRC text below.</span>
+                    <div class="hymn-file-drop" style="margin-bottom: 8px;">
+                        <input type="file" id="hymnLrcFileInput" name="lrc_file" accept=".lrc,text/plain" onchange="handleLrcFileUpload(this)">
+                        <span id="hymnLrcFileStatus" class="hymn-current-file"></span>
+                    </div>
+                    <textarea id="hymnLyricsInput" name="lyrics" rows="9" placeholder="[00:00.00] Jesus loves me, this I know&#10;[00:04.50] For the Bible tells me so&#10;..."></textarea>
+                    <div id="lrcParseSummary" style="font-size:12px; margin-top:6px; font-family:var(--font-mono); font-weight:600;"></div>
+                </div>
+            </div>
+            <div class="hymn-modal-footer">
+                <button type="button" class="btn print" onclick="closeHymnModal()">Cancel</button>
+                <button type="submit" id="hymnSubmitBtn" class="btn">Publish Hymn</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Sidebar navigation
+const navItems = document.querySelectorAll(".nav li[data-section]");
+navItems.forEach(item => {
+    item.addEventListener("click", function () {
+        document.querySelectorAll(".nav li").forEach(li => li.classList.remove("active"));
+        this.classList.add("active");
+        document.querySelectorAll(".section").forEach(sec => sec.style.display = "none");
+        const sectionId = this.getAttribute("data-section");
+        document.getElementById(sectionId).style.display = "block";
+        if (sectionId === 'hymns' && typeof loadAdminSongs === 'function') {
+            loadAdminSongs();
+        }
+    });
+});
+
+// Logout
+document.getElementById("logoutBtn").addEventListener("click", function () {
+    if(confirm("Are you sure you want to sign out?")) {
+        fetch('/logout', { method: 'POST' }).finally(() => {
+            window.location.href = "login.html";
+        });
+    }
+});
+
+// Print Feedback Table
+function printFeedback() {
+    const tableHTML = document.getElementById('feedbackTable').outerHTML;
+    const printWindow = window.open('', '', 'width=900,height=650');
+    printWindow.document.write('<html><head><title>Correspondence Ledger</title>');
+    printWindow.document.write('<style>body{font-family:Georgia,serif;padding:24px;} table{width:100%;border-collapse:collapse;} th,td{border:1px solid #ccc;padding:10px;text-align:left;}</style>');
+    printWindow.document.write('</head><body>');
+    printWindow.document.write('<h2>Maranathan & English CM — Feedback Ledger</h2><table><thead><tr><th>Submitted By</th><th>Category</th><th>Message</th><th>Status</th><th>Date</th><th>Reply</th></tr></thead>');
+    printWindow.document.write(tableHTML);
+    printWindow.document.write('</table></body></html>');
+    printWindow.document.close();
+    printWindow.print();
+}
+
+// Save Feedback Table as CSV
+function saveFeedback() {
+    let csv = 'Submitted By,Category,Message,Status,Date\n';
+    const rows = document.querySelectorAll('#feedbackTable tr');
+    rows.forEach(row => {
+        const cols = row.querySelectorAll('td');
+        if (cols.length >= 5) {
+            const rowData = [cols[0], cols[1], cols[2], cols[3], cols[4]].map(
+                col => '"' + col.innerText.replace(/"/g, '""') + '"'
+            );
+            csv += rowData.join(',') + '\n';
+        }
+    });
+
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'cm-feedback-ledger.csv';
+    link.click();
+}
+
+// Categories: Add/Edit/Delete
+function addCategory() {
+    const input = document.getElementById('newCategory');
+    if(input.value.trim() === '') return;
+    const table = document.getElementById('categoriesTable').querySelector('tbody');
+    const row = table.insertRow();
+    const cell1 = row.insertCell(0);
+    const cell2 = row.insertCell(1);
+    cell1.textContent = input.value.trim();
+    cell2.innerHTML = '<button class="btn print" onclick="editCategory(this)">Rename</button> <button class="btn danger" onclick="deleteCategory(this)">Remove</button>';
+    input.value = '';
+}
+
+function editCategory(btn) {
+    const cell = btn.parentElement.previousElementSibling;
+    const newName = prompt('Rename Category:', cell.textContent);
+    if(newName) cell.textContent = newName;
+}
+
+function deleteCategory(btn) {
+    if(confirm('Are you sure you want to remove this category?')) {
+        btn.closest('tr').remove();
+    }
+}
+
+// Show dashboard by default
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('dashboard').style.display = 'block';
+});
+</script>
+<script src="script.js"></script>
+
+</body>
+</html>

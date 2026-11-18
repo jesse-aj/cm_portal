@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CM Learning &amp; Feedback Portal — The Church of Pentecost</title>
+<link rel="stylesheet" href="css/user.css">
+</head>
+<body>
+
+<div class="dashboard">
+
+    <!-- Deep Royal Navy Sidebar -->
+    <aside class="sidebar">
+        <div>
+            <div class="sidebar-brand">
+                <img src="images/logo.png" alt="Church of Pentecost Logo" class="sidebar-logo">
+                <div class="sidebar-brand-text">
+                    <h2>CM Portal</h2>
+                    <span>Takoradi English</span>
+                </div>
+            </div>
+
+            <div class="nav-group-label">Study &amp; Devotion</div>
+            <ul id="menu">
+                <li data-tab="stories" class="active"><span>Bible Stories</span></li>
+                <li data-tab="verses"><span>Daily Bible Verses</span></li>
+                <li data-tab="devotional"><span>CM Devotional Guide</span></li>
+                <li data-tab="songs"><span>Sunday School Hymns</span></li>
+                <li data-tab="games"><span>Christian Games</span></li>
+                <li data-tab="parents"><span>Parents &amp; Teachers</span></li>
+                <li data-tab="feedback"><span>Submit Feedback</span></li>
+                <li data-tab="notifications" id="notificationsTab">
+                    <span>Notifications</span>
+                    <span id="unreadBadge" class="unread-badge" hidden></span>
+                </li>
+                <li id="logoutBtn"><span>Sign Out →</span></li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- Warm Ivory Main Content -->
+    <main class="content">
+
+        <!-- Editorial Top Masthead -->
+        <header class="portal-masthead">
+            <div>
+                <span class="masthead-eyebrow">Maranathan &amp; English Children's Ministry</span>
+                <h1 class="masthead-title" id="welcomeGreeting">Scripture &amp; Ministry Portal</h1>
+            </div>
+            <div class="masthead-meta" id="todayDateDisplay">EDITION · 2026</div>
+        </header>
+
+        <!-- 1. Bible Stories -->
+        <section id="stories" class="tab">
+            <div class="section-header-block">
+                <span class="section-eyebrow">Scripture Library · NIV</span>
+                <h2>Illustrated Bible Stories</h2>
+                <p class="section-sub">Explore foundational Old and New Testament accounts. Select any story card to reveal its core lesson and memory verse.</p>
+            </div>
+            <div class="stories-toolbar">
+                <input type="text" id="searchBox" placeholder="Search stories by title or book (e.g. Noah, David, Luke)...">
+            </div>
+            <ul id="bibleStoriesList"></ul>
+        </section>
+
+        <!-- 2. Daily Bible Verses -->
+        <section id="verses" class="tab" style="display:none;">
+            <div class="section-header-block">
+                <span class="section-eyebrow">Daily Meditation · NIV</span>
+                <h2>Scripture of the Day</h2>
+                <p class="section-sub">Read, meditate on, and commit today's appointed verse to heart.</p>
+            </div>
+            <div class="scripture-postcard">
+                <span class="postcard-badge">TODAY'S APPOINTED VERSE</span>
+                <p id="dailyVerseText"></p>
+                <p id="dailyVerseRef"></p>
+            </div>
+        </section>
+
+        <!-- 3. CM Devotional Guide -->
+        <section id="devotional" class="tab" style="display:none;">
+            <div class="section-header-block">
+                <span class="section-eyebrow">The Church of Pentecost · Children's Ministry</span>
+                <h2>Daily Devotional Guide</h2>
+                <p class="section-sub">Structured daily reading, prayer focus, and practical obedience steps for children and families.</p>
+            </div>
+
+            <div class="devotional-grid">
+                <div class="editorial-card">
+                    <span class="section-eyebrow">Today's Theme</span>
+                    <h3 id="devotionalTheme"></h3>
+
+                    <div class="devotional-verse-banner">
+                        <div id="memoryVerseRef"></div>
+                        <p id="memoryVerseText"></p>
+                    </div>
+
+                    <div class="devotional-block">
+                        <span class="section-eyebrow">Devotional Message</span>
+                        <p id="devotionalMessage"></p>
+                    </div>
+
+                    <div class="devotional-block">
+                        <span class="section-eyebrow">Prayer Focus</span>
+                        <p id="prayerGuide"></p>
+                    </div>
+                </div>
+
+                <div class="editorial-card">
+                    <span class="section-eyebrow">Daily Practice</span>
+                    <h3>Action Checklist</h3>
+                    <p class="section-sub" style="margin-bottom: 12px;">Tick each action as you complete it today:</p>
+                    <ul id="actionList"></ul>
+                    <p id="completionMessage"></p>
+
+                    <div class="devotional-block">
+                        <span class="section-eyebrow">Workbook Assignment</span>
+                        <h3>Homework</h3>
+                        <p id="homeworkText"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Sunday School Hymns & Karaoke Studio -->
+        <section id="songs" class="tab" style="display:none;">
+            <div class="section-header-block">
+                <span class="section-eyebrow">Children's Praise &amp; Worship</span>
+                <h2>Sunday School Hymns &amp; Karaoke Studio</h2>
+                <p class="section-sub">Choose a hymn to sing praises together! Switch freely between Sing-Along (Vocal) and Karaoke (Instrumental) backing tracks, or tap any line of lyrics to jump right to that verse.</p>
+            </div>
+
+            <div class="karaoke-layout">
+                <!-- Left: Hymn Catalog / Songbook -->
+                <div class="karaoke-songbook">
+                    <div class="karaoke-search-box">
+                        <input type="text" id="karaokeSearchInput" placeholder="Search hymns by title or words...">
+                    </div>
+                    <ul id="karaokeHymnsList" class="karaoke-hymn-list">
+                        <li style="padding:16px; color:var(--ink-500); text-align:center;">Loading hymns…</li>
+                    </ul>
+                </div>
+
+                <!-- Right: Karaoke Stage & Interactive Player -->
+                <div class="karaoke-stage">
+                    <div class="stage-top-meta">
+                        <div class="stage-song-info">
+                            <span id="karaokeSubtitle">SUNDAY SCHOOL PRAISE</span>
+                            <h3 id="karaokeTitle">Select a hymn to begin</h3>
+                        </div>
+                    </div>
+
+                    <!-- Mode Toggle: Sing-Along vs Karaoke & Sync Calibrator -->
+                    <div class="karaoke-switcher-wrapper">
+                        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                            <span class="switcher-label">Track Mode:</span>
+                            <div class="karaoke-toggle-group">
+                                <button type="button" id="vocalToggleBtn" class="karaoke-toggle-btn active" onclick="setKaraokeMode('vocal')">
+                                    <span>🎤</span>
+                                    <span>Sing-Along (Vocal)</span>
+                                </button>
+                                <button type="button" id="instrumentalToggleBtn" class="karaoke-toggle-btn" onclick="setKaraokeMode('instrumental')">
+                                    <span>🎹</span>
+                                    <span>Karaoke (Instrumental)</span>
+                                </button>
+                            </div>
+                            <span id="trackStatusBadge" class="track-pill-status"></span>
+                        </div>
+
+                        <!-- Sync Fine-Tuning Calibration -->
+                        <div class="karaoke-sync-calibrator">
+                            <span class="calibrator-label">⏱ Sync:</span>
+                            <button type="button" class="sync-offset-btn" onclick="adjustSyncOffset(-0.2)" title="Highlight lyrics earlier">-0.2s</button>
+                            <span id="syncOffsetDisplay" class="sync-offset-val">0.0s</span>
+                            <button type="button" class="sync-offset-btn" onclick="adjustSyncOffset(+0.2)" title="Highlight lyrics later">+0.2s</button>
+                            <button type="button" class="sync-offset-btn" onclick="resetSyncOffset()" title="Reset to standard timing">↺</button>
+                        </div>
+                    </div>
+
+                    <!-- Audio Transport Controls -->
+                    <div class="karaoke-transport">
+                        <button type="button" id="karaokePlayBtn" class="karaoke-btn-play" title="Play / Pause" onclick="toggleKaraokePlay()">▶</button>
+                        <button type="button" id="karaokeRestartBtn" class="karaoke-btn-restart" title="Restart Song" onclick="restartKaraokeSong()">↺ Restart</button>
+
+                        <div class="karaoke-timeline-box">
+                            <input type="range" id="karaokeProgress" min="0" max="1000" value="0" step="1" oninput="onSeekKaraoke(this.value)">
+                            <span id="karaokeTimeDisplay" class="karaoke-time-display">0:00 / 0:00</span>
+                        </div>
+
+                        <div class="karaoke-volume-box">
+                            <span style="font-size: 14px;">🔊</span>
+                            <input type="range" id="karaokeVolume" min="0" max="1" step="0.05" value="0.9" oninput="onVolumeChange(this.value)">
+                        </div>
+                    </div>
+
+                    <div id="karaokeAudioNotice" class="karaoke-audio-notice" style="display:none;"></div>
+
+                    <!-- Synchronized Lyrics Stage -->
+                    <div id="lyricsStage" class="karaoke-lyrics-stage">
+                        <div id="karaokeLyricsContainer" class="karaoke-lyrics-list">
+                            <p class="karaoke-lyric-line" style="color: rgba(255,255,255,0.7);">Choose a hymn from the songbook to view lyrics &amp; start singing!</p>
+                        </div>
+                    </div>
+
+                    <audio id="karaokeAudio" preload="metadata"></audio>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Games -->
+        <section id="games" class="tab" style="display:none;">
+            <div class="section-header-block">
+                <span class="section-eyebrow">Interactive Learning</span>
+                <h2>Christian Games &amp; Challenges</h2>
+                <p class="section-sub">Test your scripture memory, character knowledge, and Bible trivia.</p>
+            </div>
+            <ul>
+                <li id="startQuiz">Bible Quiz Challenge</li>
+                <li id="startMemoryMatch">Memory Verse Flip Game</li>
+                <li id="startCharacterHangman">Bible Character Hangman</li>
+                <li id="startArkMatch">Noah's Ark Animal Match</li>
+                <li id="wordSearch">Bible Word Search</li>
+                <li id="verseScramble">Verse Scramble</li>
+                <li id="triviaSpinner">Trivia Spinner</li>
+                <li id="whoSaidIt">Who Said It?</li>
+            </ul>
+            <div id="gameContainer">
+                <span class="section-eyebrow">Activity Stage</span>
+                <h3>Select a game above to begin</h3>
+                <p class="section-sub">Interactive game modules will load right here in your reading stage.</p>
+            </div>
+        </section>
+
+        <!-- 6. Parents & Teachers -->
+        <section id="parents" class="tab" style="display:none;">
+            <div class="section-header-block">
+                <span class="section-eyebrow">Curriculum &amp; Guides</span>
+                <h2>Parents &amp; Teachers Library</h2>
+                <p class="section-sub">Lesson plans, printable worksheets, and home discipleship checklists.</p>
+            </div>
+            <div class="resource-stack">
+                <div>
+                    <button class="collapsible">Weekly Lesson Plan</button>
+                    <div class="resource-drawer" style="display:none;">
+                        <a href="lesson-plan.pdf" download>Download Weekly Lesson Plan (PDF) →</a>
+                    </div>
+                </div>
+                <div>
+                    <button class="collapsible">Sunday School Teaching Guide</button>
+                    <div class="resource-drawer" style="display:none;">
+                        <a href="teaching-guide.pdf" download>Download Teaching Guide (PDF) →</a>
+                    </div>
+                </div>
+                <div>
+                    <button class="collapsible">Printable Activity Worksheets</button>
+                    <div class="resource-drawer" style="display:none;">
+                        <a href="worksheets.pdf" download>Download Printable Worksheets (PDF) →</a>
+                    </div>
+                </div>
+                <div>
+                    <button class="collapsible">Home Devotional Companion</button>
+                    <div class="resource-drawer" style="display:none;">
+                        <a href="home-devotional.pdf" download>Download Home Devotional Guide (PDF) →</a>
+                    </div>
+                </div>
+                <div>
+                    <button class="collapsible">Child Spiritual Growth Checklist</button>
+                    <div class="resource-drawer" style="display:none;">
+                        <ul>
+                            <li><label><input type="checkbox"> Pray with your child each morning and evening</label></li>
+                            <li><label><input type="checkbox"> Read one Bible story together during the week</label></li>
+                            <li><label><input type="checkbox"> Practice the weekly memory verse aloud</label></li>
+                            <li><label><input type="checkbox"> Discuss Sunday School lessons over family meals</label></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. Feedback -->
+        <section id="feedback" class="tab" style="display:none;">
+            <div class="section-header-block">
+                <span class="section-eyebrow">Ministry Correspondence</span>
+                <h2>Submit Feedback</h2>
+                <p class="section-sub">Share an improvement suggestion, concern, or note of appreciation directly with the CM leadership team.</p>
+            </div>
+
+            <div class="feedback-split">
+                <div class="editorial-card">
+                    <form id="userFeedbackForm">
+                        <label for="feedbackCategorySelect">Category</label>
+                        <select id="feedbackCategorySelect" name="category" required>
+                            <option value="">Select a category...</option>
+                            <option value="Improvement Suggestion">Improvement Suggestion</option>
+                            <option value="Concern">Concern</option>
+                            <option value="Appreciation">Appreciation</option>
+                        </select>
+
+                        <label for="feedbackMessageInput">Your Message</label>
+                        <textarea id="feedbackMessageInput" name="message" rows="5" placeholder="Write your thoughts clearly for the ministry team..." required></textarea>
+
+                        <button type="submit">Send Correspondence</button>
+                    </form>
+                    <p id="feedbackNotice" class="feedback-notice" role="status" aria-live="polite" hidden></p>
+                </div>
+
+                <div class="editorial-card" style="background: var(--ivory-100);">
+                    <span class="section-eyebrow">How It Works</span>
+                    <h3>Direct Leadership Review</h3>
+                    <p class="section-sub" style="margin-bottom: 16px;">
+                        Every submission is reviewed by the Maranathan &amp; English Children's Ministry executives.
+                    </p>
+                    <p class="section-sub">
+                        When an administrator responds to your message, a gold badge will appear on your <strong>Notifications</strong> tab in the sidebar.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. Notifications -->
+        <section id="notifications" class="tab" style="display:none;">
+            <div class="section-header-block">
+                <span class="section-eyebrow">Correspondence Inbox</span>
+                <h2>Notifications &amp; Replies</h2>
+                <p class="section-sub">Track your submitted feedback and read official responses from the Children's Ministry leadership.</p>
+            </div>
+            <div id="notificationsList"><p>Loading correspondence…</p></div>
+        </section>
+
+    </main>
+</div>
+
+<script>
+// ---------------- DATE & MASTHEAD ----------------
+const dateEl = document.getElementById("todayDateDisplay");
+if (dateEl) {
+    dateEl.textContent = new Date().toLocaleDateString('en-GB', {
+        weekday: 'short', day: 'numeric', month: 'short', year: 'numeric'
+    }).toUpperCase();
+}
+
+// ---------------- TAB NAVIGATION ----------------
+const menuItems = document.querySelectorAll("#menu li[data-tab]");
+const tabs = document.querySelectorAll(".tab");
+menuItems.forEach(item => {
+    item.addEventListener("click", () => {
+        const tabId = item.getAttribute("data-tab");
+        tabs.forEach(tab => tab.style.display = "none");
+        document.getElementById(tabId).style.display = "block";
+        menuItems.forEach(i => i.classList.remove("active"));
+        item.classList.add("active");
+        if (tabId === 'songs' && typeof initUserKaraoke === 'function') {
+            initUserKaraoke();
+        }
+    });
+});
+
+// ---------------- LOGOUT ----------------
+document.getElementById("logoutBtn").addEventListener("click", () => {
+    if (confirm("Are you sure you want to sign out?")) {
+        fetch('/logout', { method: 'POST' }).finally(() => {
+            window.location.href = "login.html";
+        });
+    }
+});
+
+// ---------------- COLLAPSIBLES ----------------
+document.querySelectorAll(".collapsible").forEach(btn => {
+    btn.addEventListener("click", function() {
+        const content = this.nextElementSibling;
+        content.style.display = content.style.display === "block" ? "none" : "block";
+    });
+});
+
+// ---------------- DAILY VERSES ----------------
+const verses = [
+    { ref: "Proverbs 3:5 · NIV", text: "“Trust in the Lord with all your heart and lean not on your own understanding.”" },
+    { ref: "Psalm 119:105 · NIV", text: "“Your word is a lamp for my feet, a light on my path.”" },
+    { ref: "Matthew 19:14 · NIV", text: "“Let the little children come to me, and do not hinder them, for the kingdom of heaven belongs to such as these.”" },
+    { ref: "Philippians 4:13 · NIV", text: "“I can do all things through Christ who strengthens me.”" }
+];
+const today = new Date().getDate();
+const verseIndex = today % verses.length;
+document.getElementById("dailyVerseRef").textContent = verses[verseIndex].ref;
+document.getElementById("dailyVerseText").textContent = verses[verseIndex].text;
+
+// ---------------- DEVOTIONAL ----------------
+const devotionals = [
+    { theme: "Faith in God", verseRef: "Hebrews 11:1 · Memory Verse", verseText: "“Now faith is confidence in what we hope for and assurance about what we do not see.”", message: "Trust God at all times, even when you cannot see the full picture ahead. He is faithful to guide every step.", prayer: "Lord Jesus, strengthen my faith and help me trust Your promises every day.", actions: ["Offer morning prayer", "Read today's memory verse aloud", "Encourage a friend or sibling", "Give thanks before meals"], homework: "Memorize Hebrews 11:1 and recite it to your parent or teacher." },
+    { theme: "Walking in Obedience", verseRef: "Ephesians 6:1 · Memory Verse", verseText: "“Children, obey your parents in the Lord, for this is right.”", message: "God honours children who listen attentively and obey their parents and teachers with a cheerful heart.", prayer: "Heavenly Father, give me a humble and obedient heart today.", actions: ["Obey instructions promptly", "Show respect to teachers", "Help with a chore at home", "Speak kindly and politely"], homework: "Write down 3 ways you practiced obedience at home or school today." }
+];
+const todayDevotional = devotionals[today % devotionals.length];
+document.getElementById("devotionalTheme").textContent = todayDevotional.theme;
+document.getElementById("memoryVerseRef").textContent = todayDevotional.verseRef;
+document.getElementById("memoryVerseText").textContent = todayDevotional.verseText;
+document.getElementById("devotionalMessage").textContent = todayDevotional.message;
+document.getElementById("prayerGuide").textContent = todayDevotional.prayer;
+document.getElementById("homeworkText").textContent = todayDevotional.homework;
+
+const actionList = document.getElementById("actionList");
+const completionMessage = document.getElementById("completionMessage");
+actionList.innerHTML = "";
+todayDevotional.actions.forEach(action => {
+    const li = document.createElement("li");
+    const cb = document.createElement("input");
+    cb.type = "checkbox";
+    cb.addEventListener("change", () => {
+        const allChecked = [...actionList.querySelectorAll("input")].every(i => i.checked);
+        completionMessage.textContent = allChecked ? "Well done! You have completed all of today's devotional actions." : "";
+    });
+    li.appendChild(cb);
+    li.appendChild(document.createTextNode(action));
+    actionList.appendChild(li);
+});
+
+// ---------------- BIBLE STORIES ----------------
+const bibleStories = [
+    { title: "The Creation", reference: "Genesis 1", lesson: "God is the sovereign Creator of heaven, earth, and all living things.", memoryVerse: "Genesis 1:1 — In the beginning God created the heavens and the earth." },
+    { title: "Noah's Ark", reference: "Genesis 6–9", lesson: "Wholehearted obedience to God brings protection and covenant blessing.", memoryVerse: "Genesis 6:22 — Noah did everything just as God commanded him." },
+    { title: "David and Goliath", reference: "1 Samuel 17", lesson: "With God on our side, no giant or challenge is too great to overcome.", memoryVerse: "1 Samuel 17:47 — For the battle is the Lord's." },
+    { title: "Daniel in the Lions' Den", reference: "Daniel 6", lesson: "Steadfast prayer and faithfulness to God deliver us in times of trial.", memoryVerse: "Daniel 6:22 — My God sent his angel, and he shut the mouths of the lions." },
+    { title: "Jesus Feeds the Five Thousand", reference: "Matthew 14:13–21", lesson: "When we place even our small gifts in Jesus' hands, He multiplies them abundantly.", memoryVerse: "Matthew 14:20 — They all ate and were satisfied." },
+    { title: "Jonah and the Great Fish", reference: "Jonah 1–3", lesson: "God is merciful and hears us when we repent and turn back to His call.", memoryVerse: "Jonah 2:2 — In my distress I called to the Lord, and he answered me." },
+    { title: "The Good Samaritan", reference: "Luke 10:25–37", lesson: "True love for God is shown through practical compassion toward anyone in need.", memoryVerse: "Luke 10:27 — Love your neighbor as yourself." },
+    { title: "Moses and the Burning Bush", reference: "Exodus 3", lesson: "God calls His people by name and equips them for His holy purpose.", memoryVerse: "Exodus 3:12 — And God said, 'I will be with you.'" },
+    { title: "The Prodigal Son", reference: "Luke 15:11–32", lesson: "Our Heavenly Father eagerly welcomes and forgives all who return home to Him.", memoryVerse: "Luke 15:24 — For this son of mine was dead and is alive again." },
+    { title: "Zacchaeus the Tax Collector", reference: "Luke 19:1–10", lesson: "Encountering Jesus transforms our hearts and restores our lives.", memoryVerse: "Luke 19:9 — Today salvation has come to this house." },
+    { title: "Peter Walks on the Water", reference: "Matthew 14:22–33", lesson: "Fix your eyes firmly on Jesus amidst the winds and waves of life.", memoryVerse: "Matthew 14:27 — Take courage! It is I. Don't be afraid." }
+];
+
+const storyList = document.getElementById("bibleStoriesList");
+const searchBox = document.getElementById("searchBox");
+
+function renderStories(filter = "") {
+    storyList.innerHTML = "";
+    const q = filter.toLowerCase();
+    bibleStories
+        .filter(s => s.title.toLowerCase().includes(q) || s.reference.toLowerCase().includes(q))
+        .forEach(story => {
+            const li = document.createElement("li");
+
+            const header = document.createElement("div");
+            header.className = "story-card-header";
+
+            const titleSpan = document.createElement("span");
+            titleSpan.className = "story-title";
+            titleSpan.textContent = story.title;
+
+            const refPill = document.createElement("span");
+            refPill.className = "story-ref-pill";
+            refPill.textContent = story.reference;
+
+            header.append(titleSpan, refPill);
+
+            const hint = document.createElement("span");
+            hint.className = "story-hint";
+            hint.textContent = "READ LESSON & VERSE →";
+
+            const contentDiv = document.createElement("div");
+            contentDiv.className = "story-content";
+            contentDiv.style.display = "none";
+            contentDiv.innerHTML = `
+                <p><strong>Key Lesson:</strong> ${story.lesson}</p>
+                <div class="story-verse-box">${story.memoryVerse}</div>
+            `;
+
+            li.append(header, hint, contentDiv);
+            storyList.appendChild(li);
+
+            li.addEventListener("click", () => {
+                const isOpen = contentDiv.style.display === "block";
+                contentDiv.style.display = isOpen ? "none" : "block";
+                hint.textContent = isOpen ? "READ LESSON & VERSE →" : "HIDE LESSON ↑";
+            });
+        });
+}
+
+renderStories();
+searchBox.addEventListener("input", () => renderStories(searchBox.value));
+
+// ---------------- CHRISTIAN GAMES ----------------
+const gameContainer = document.getElementById('gameContainer');
+
+function launchGame(title, description) {
+    gameContainer.innerHTML = `
+        <span class="section-eyebrow">Active Module</span>
+        <h3>${title}</h3>
+        <p class="section-sub">${description}</p>
+    `;
+}
+
+document.getElementById('startQuiz').addEventListener('click', () => {
+    launchGame('Bible Quiz Challenge', 'Quiz module ready — question bank will load here.');
+});
+document.getElementById('startMemoryMatch').addEventListener('click', () => {
+    launchGame('Memory Verse Flip Game', 'Memory matching board will load here.');
+});
+document.getElementById('startCharacterHangman').addEventListener('click', () => {
+    launchGame('Bible Character Hangman', 'Character guessing challenge will load here.');
+});
+document.getElementById('startArkMatch').addEventListener('click', () => {
+    launchGame("Noah's Ark Animal Match", 'Pair matching board will load here.');
+});
+document.getElementById('wordSearch').addEventListener('click', () => {
+    launchGame('Bible Word Search', 'Find hidden scripture words in the grid.');
+});
+document.getElementById('verseScramble').addEventListener('click', () => {
+    launchGame('Verse Scramble', 'Unscramble the words to complete the NIV Bible verse.');
+});
+document.getElementById('triviaSpinner').addEventListener('click', () => {
+    launchGame('Trivia Spinner', 'Spin the wheel to draw a random Bible trivia question.');
+});
+document.getElementById('whoSaidIt').addEventListener('click', () => {
+    launchGame('Who Said It?', 'Match the quotation to the Bible figure who spoke it.');
+});
+</script>
+<script src="script.js"></script>
+</body>
+</html>
