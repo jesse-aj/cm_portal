@@ -356,7 +356,13 @@
                 </div>
                 <h2 id="modalStoryTitle" class="story-modal-title">The Creation of the World</h2>
             </div>
-            <button type="button" id="closeStoryModalBtn" class="story-modal-close" title="Close Theater (Esc)" aria-label="Close">✕</button>
+            <div style="display:flex; align-items:center; gap:10px;">
+                <a id="modalExternalYtLink" href="#" target="_blank" rel="noopener noreferrer" class="story-yt-external-btn" title="Open on YouTube">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    <span>YouTube ↗</span>
+                </a>
+                <button type="button" id="closeStoryModalBtn" class="story-modal-close" title="Close Theater (Esc)" aria-label="Close">✕</button>
+            </div>
         </header>
 
         <!-- 16:9 Responsive Cinema Screen -->
@@ -366,6 +372,7 @@
                         src="" 
                         title="Animated Bible Story Video" 
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        referrerpolicy="strict-origin-when-cross-origin"
                         allowfullscreen></iframe>
             </div>
         </div>
@@ -526,7 +533,7 @@ const bibleStories = [
         testament: "ot",
         testamentLabel: "Old Testament",
         reference: "Genesis 6:9–9:17",
-        youtubeId: "WvG9tQ2i8rY", // Saddleback Kids: Noah
+        youtubeId: "qzYjy6lhRag", // Saddleback Kids: Noah's Ark (Verified)
         duration: "5 min",
         summary: "When the earth was filled with wickedness, Noah walked faithfully with God and built an ark to save his household and the animals.",
         lesson: "Wholehearted obedience to God brings divine protection, and God always remembers His promises.",
@@ -544,7 +551,7 @@ const bibleStories = [
         testament: "ot",
         testamentLabel: "Old Testament",
         reference: "Exodus 3:1–15",
-        youtubeId: "6vhK_O_888E", // Saddleback Kids: Moses & Burning Bush
+        youtubeId: "SfR1x3lvrvs", // Saddleback Kids: Moses & Burning Bush (Verified)
         duration: "4 min",
         summary: "In the desert at Mount Horeb, God called Moses from a bush that burned without being consumed and commissioned him to lead Israel out of bondage.",
         lesson: "God hears our cries, calls us by name, and empowers ordinary people to accomplish His holy mission.",
@@ -562,7 +569,7 @@ const bibleStories = [
         testament: "ot",
         testamentLabel: "Old Testament",
         reference: "1 Samuel 17:1–50",
-        youtubeId: "R9K1xLz4tU0", // Saddleback Kids: David and Goliath
+        youtubeId: "NuedVFB8-7Y", // Saddleback Kids: David and Goliath (Verified)
         duration: "5 min",
         summary: "Armed only with a shepherd's sling, five smooth stones, and faith in the living God, young David brought down the Philistine champion.",
         lesson: "When we face giants in life, the battle belongs to the Lord. God looks at the courage and faith of our hearts.",
@@ -580,7 +587,7 @@ const bibleStories = [
         testament: "ot",
         testamentLabel: "Old Testament",
         reference: "Daniel 6:1–28",
-        youtubeId: "bEmzcTJNVvU", // Saddleback Kids: Daniel in the Lions' Den
+        youtubeId: "bEM_X25DWPk", // Saddleback Kids: Daniel in the Lions' Den (Verified)
         duration: "4 min",
         summary: "Refusing to compromise his devotion to God, Daniel continued praying three times a day and was thrown into a den of hungry lions.",
         lesson: "Steadfast faith and daily prayer give us supernatural strength, and God can shut the mouths of any danger.",
@@ -598,7 +605,7 @@ const bibleStories = [
         testament: "ot",
         testamentLabel: "Old Testament",
         reference: "Jonah 1:1–3:10",
-        youtubeId: "WOSadLyqreQ", // Saddleback Kids: Jonah
+        youtubeId: "WOSadLyqshg", // Saddleback Kids: Jonah and the Fish (Verified)
         duration: "5 min",
         summary: "Jonah ran from God's instruction to preach in Nineveh, but inside the belly of a great fish, he repented and learned of God's boundless mercy.",
         lesson: "You can never outrun God's presence, and His heart is always ready to forgive anyone who repents.",
@@ -616,7 +623,7 @@ const bibleStories = [
         testament: "nt",
         testamentLabel: "New Testament",
         reference: "Matthew 14:13–21",
-        youtubeId: "S6rj9cAJrWE", // Saddleback Kids: Jesus Feeds 5000
+        youtubeId: "S6rj9cAJrWE", // Saddleback Kids: Jesus Feeds 5000 (Verified)
         duration: "4 min",
         summary: "When a huge crowd was hungry in a remote place, a boy offered five small loaves and two fish, which Jesus multiplied to feed everyone abundantly.",
         lesson: "No gift is too small when placed in Jesus' hands. He cares about our practical needs and provides with excess.",
@@ -634,7 +641,7 @@ const bibleStories = [
         testament: "nt",
         testamentLabel: "New Testament",
         reference: "Matthew 14:22–33",
-        youtubeId: "oSub4TkahjI", // Saddleback Kids: Peter Walks on Water
+        youtubeId: "U69Ag6wEyB0", // Saddleback Kids: Jesus Walks on Water (Verified)
         duration: "4 min",
         summary: "During a fierce storm on the Sea of Galilee, Jesus walked across the waves and invited Peter to step out of the boat in faith.",
         lesson: "Keep your eyes fixed on Jesus. Even when the winds blow and doubt creeps in, His hand is immediately there to catch you.",
@@ -652,7 +659,7 @@ const bibleStories = [
         testament: "nt",
         testamentLabel: "New Testament",
         reference: "Luke 10:25–37",
-        youtubeId: "MLydcGnW00E", // Saddleback Kids: The Good Samaritan
+        youtubeId: "osfQg4yKtq8", // Saddleback Kids: The Good Samaritan (Verified)
         duration: "4 min",
         summary: "Jesus taught that our true neighbor is anyone in need, illustrated through an unlikely Samaritan who stopped to bandage and care for a wounded stranger.",
         lesson: "Love for God must be demonstrated in active, compassionate action toward those who are hurting or overlooked.",
@@ -670,7 +677,7 @@ const bibleStories = [
         testament: "nt",
         testamentLabel: "New Testament",
         reference: "Luke 15:11–32",
-        youtubeId: "DJgRO3TbpUQ", // Saddleback Kids: The Prodigal Son
+        youtubeId: "DJgROx4wFKM", // Saddleback Kids: The Prodigal Son (Verified)
         duration: "5 min",
         summary: "A runaway son squandered his inheritance, but when he returned home broken and repentant, his father ran to embrace him with joyous celebration.",
         lesson: "Our Heavenly Father never gives up on us. He welcomes every repentant child home with unconditional love and grace.",
@@ -688,7 +695,7 @@ const bibleStories = [
         testament: "nt",
         testamentLabel: "New Testament",
         reference: "Luke 19:1–10",
-        youtubeId: "5BjtbJFz2Ec", // Saddleback Kids: Zacchaeus
+        youtubeId: "5BjtbJFz2ug", // Saddleback Kids: Zacchaeus (Verified)
         duration: "4 min",
         summary: "Short in stature, Zacchaeus climbed a sycamore-fig tree to see Jesus. Jesus called him by name, stayed at his home, and transformed his life.",
         lesson: "Jesus sees every individual, knows your name, and came to seek and save the lost.",
@@ -837,6 +844,7 @@ const nextStoryBtn = document.getElementById("nextStoryBtn");
 const copyVerseBtn = document.getElementById("copyVerseBtn");
 const copyBtnText = document.getElementById("copyBtnText");
 const closeStoryModalBtn = document.getElementById("closeStoryModalBtn");
+const modalExternalYtLink = document.getElementById("modalExternalYtLink");
 
 function openStoryModal(index) {
     if (!bibleStories[index]) return;
@@ -848,12 +856,16 @@ function openStoryModal(index) {
     modalTestament.className = `testament-badge ${story.testament}`;
     modalRef.textContent = story.reference;
 
-    // Load video embed with autoplay
+    // Load video embed with official standard youtube embed URL
     const ytid = parseYouTubeId(story.youtubeId);
     if (ytid) {
-        modalIframe.src = `https://www.youtube-nocookie.com/embed/${ytid}?autoplay=1&rel=0&modestbranding=1`;
+        modalIframe.src = `https://www.youtube.com/embed/${ytid}?autoplay=1&rel=0&modestbranding=1`;
+        if (modalExternalYtLink) {
+            modalExternalYtLink.href = `https://www.youtube.com/watch?v=${ytid}`;
+        }
     } else {
         modalIframe.src = "";
+        if (modalExternalYtLink) modalExternalYtLink.href = "#";
     }
 
     modalVerse.textContent = `"${story.memoryVerse}"`;

@@ -712,6 +712,33 @@ body {
     letter-spacing: -0.015em;
 }
 
+.story-yt-external-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: var(--white);
+    padding: 7px 12px;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.16s ease;
+}
+
+.story-yt-external-btn svg {
+    color: #FF0000;
+}
+
+.story-yt-external-btn:hover {
+    background: rgba(255, 0, 0, 0.20);
+    border-color: #FF0000;
+    color: var(--white);
+    transform: translateY(-1px);
+}
+
 .story-modal-close {
     appearance: none;
     width: 38px;
