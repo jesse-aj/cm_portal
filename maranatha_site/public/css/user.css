@@ -308,99 +308,629 @@ body {
     box-shadow: 0 0 0 3px rgba(19, 42, 94, 0.08);
 }
 
+/* =========================================================
+   BIBLE STORIES VIDEO THEATER (TACTILE 3D EDITORIAL)
+   ========================================================= */
+.stories-toolbar-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.stories-search-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.stories-search-bar svg {
+    position: absolute;
+    left: 16px;
+    color: var(--ink-500);
+    pointer-events: none;
+}
+
+#searchBox {
+    width: 100%;
+    padding: 13px 18px 13px 44px;
+    border-radius: 10px;
+    border: 1px solid var(--stone-300);
+    background: var(--white);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: var(--ink-900);
+    box-shadow: 0 2px 4px rgba(11, 25, 56, 0.03);
+    transition: all 0.2s ease;
+}
+
+#searchBox:focus {
+    outline: none;
+    border-color: var(--navy-800);
+    box-shadow: 0 0 0 3px rgba(19, 42, 94, 0.10), 0 4px 12px rgba(11, 25, 56, 0.05);
+}
+
+.stories-filter-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.story-chip-btn {
+    appearance: none;
+    background: var(--white);
+    border: 1px solid var(--ivory-200);
+    color: var(--ink-700);
+    padding: 7px 15px;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 0 rgba(11, 25, 56, 0.04);
+    transition: all 0.15s ease;
+}
+
+.story-chip-btn:hover {
+    border-color: var(--navy-800);
+    color: var(--navy-900);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 0 rgba(11, 25, 56, 0.06);
+}
+
+.story-chip-btn.active {
+    background: var(--navy-900);
+    border-color: var(--navy-900);
+    color: var(--gold-400);
+    box-shadow: 0 3px 0 var(--navy-950);
+}
+
+/* 3D Story Grid & Cards */
 #bibleStoriesList {
     list-style: none;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 18px;
+    gap: 26px;
 }
 
-#bibleStoriesList li {
+.story-card-3d {
     background: var(--white);
-    border: 1px solid var(--ivory-200);
-    border-radius: 12px;
-    padding: 22px 24px;
+    border-radius: 16px;
+    border: 1px solid rgba(19, 42, 94, 0.09);
+    box-shadow: 0 4px 0 rgba(11, 25, 56, 0.05), 0 10px 24px -4px rgba(11, 25, 56, 0.07);
+    overflow: hidden;
     cursor: pointer;
-    transition: all 0.18s ease;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease, border-color 0.22s ease;
+    position: relative;
 }
 
-#bibleStoriesList li:hover {
+.story-card-3d:hover {
+    transform: translateY(-5px);
     border-color: var(--navy-800);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 28px rgba(11, 25, 56, 0.07);
+    box-shadow: 0 8px 0 rgba(11, 25, 56, 0.05), 0 20px 32px -6px rgba(11, 25, 56, 0.12);
 }
 
-.story-card-header {
+.story-card-3d:active {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 0 rgba(11, 25, 56, 0.05), 0 6px 14px rgba(11, 25, 56, 0.08);
+}
+
+/* Thumbnail Visual Header */
+.story-thumb-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: var(--navy-950);
+    overflow: hidden;
+}
+
+.story-thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease, filter 0.35s ease;
+    filter: brightness(0.92);
+}
+
+.story-card-3d:hover .story-thumb-img {
+    transform: scale(1.05);
+    filter: brightness(1);
+}
+
+.story-thumb-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(7, 17, 38, 0.25) 0%, rgba(7, 17, 38, 0.65) 100%);
     display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
 }
 
-.story-title {
+/* 3D Pillowed Play Badge */
+.story-play-badge {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, var(--navy-800), var(--navy-950));
+    border: 2px solid var(--gold-400);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45), inset 0 1px 2px rgba(255, 255, 255, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold-400);
+    transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.22s ease;
+}
+
+.story-play-badge svg {
+    margin-left: 3px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.story-card-3d:hover .story-play-badge {
+    transform: scale(1.14);
+    box-shadow: 0 10px 24px rgba(217, 150, 0, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.6);
+}
+
+/* Floating Pills on Thumbnail */
+.story-badge-top-left {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.story-testament-pill {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+}
+
+.story-testament-pill.ot {
+    background: rgba(11, 25, 56, 0.88);
+    color: var(--gold-400);
+    border: 1px solid rgba(245, 184, 0, 0.4);
+}
+
+.story-testament-pill.nt {
+    background: rgba(19, 42, 94, 0.90);
+    color: #93C5FD;
+    border: 1px solid rgba(147, 197, 253, 0.35);
+}
+
+.story-ref-chip {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--navy-900);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+
+.story-duration-pill {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 2;
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    font-weight: 600;
+    padding: 3px 7px;
+    border-radius: 5px;
+    background: rgba(7, 17, 38, 0.85);
+    color: var(--white);
+    letter-spacing: 0.04em;
+    backdrop-filter: blur(4px);
+}
+
+/* Card Body */
+.story-card-body {
+    padding: 18px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: space-between;
+}
+
+.story-card-title {
     font-family: var(--font-sans);
     font-size: 17px;
     font-weight: 700;
-    letter-spacing: -0.015em;
-    color: var(--navy-900);
-    display: block;
+    color: var(--navy-950);
     line-height: 1.3;
+    margin-bottom: 8px;
+    letter-spacing: -0.015em;
 }
 
-.story-ref-pill {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--navy-800);
-    background: var(--ivory-100);
-    padding: 4px 10px;
-    border-radius: 999px;
-    white-space: nowrap;
-}
-
-.story-hint {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--gold-500);
-    margin-top: 12px;
-    display: inline-block;
-}
-
-.story-content {
-    margin-top: 16px;
-    padding-top: 16px;
-    border-top: 1px solid var(--ivory-200);
-    font-size: 14px;
-    line-height: 1.6;
+.story-card-desc {
+    font-size: 13.5px;
     color: var(--ink-700);
+    line-height: 1.55;
+    margin-bottom: 14px;
 }
 
-.story-content p {
-    margin-bottom: 10px;
-}
-
-.story-verse-box {
+/* Verse Preview Box on Card */
+.story-verse-preview {
     background: var(--ivory-50);
     border-left: 3px solid var(--gold-400);
-    padding: 10px 14px;
-    border-radius: 0 6px 6px 0;
-    font-family: var(--font-sans);
-    font-size: 14px;
-    font-weight: 600;
+    padding: 9px 12px;
+    border-radius: 0 8px 8px 0;
+    font-size: 12.5px;
     color: var(--navy-900);
-    margin-top: 8px;
+    margin-bottom: 16px;
+    font-style: italic;
+    line-height: 1.45;
 }
 
-.story-content img {
-    margin-top: 12px;
-    max-width: 100%;
-    max-height: 180px;
+.story-verse-preview strong {
+    font-style: normal;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    display: block;
+    color: var(--gold-500);
+    margin-bottom: 2px;
+}
+
+/* Card Action Button */
+.story-card-btn {
+    appearance: none;
+    width: 100%;
+    background: linear-gradient(180deg, var(--navy-800) 0%, var(--navy-900) 100%);
+    color: var(--white);
+    border: 1px solid var(--navy-950);
     border-radius: 8px;
-    object-fit: cover;
+    padding: 10px 14px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 3px 0 var(--navy-950), 0 6px 12px rgba(11, 25, 56, 0.12);
+    transition: all 0.16s ease;
+}
+
+.story-card-btn svg {
+    color: var(--gold-400);
+}
+
+.story-card-btn:hover {
+    background: linear-gradient(180deg, var(--navy-700) 0%, var(--navy-800) 100%);
+    color: var(--gold-400);
+}
+
+.story-card-3d:active .story-card-btn {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 var(--navy-950);
+}
+
+/* =========================================================
+   BIBLE STORY CINEMA THEATER MODAL
+   ========================================================= */
+.story-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: rgba(7, 17, 38, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeInModal 0.22s ease-out;
+}
+
+@keyframes fadeInModal {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.story-modal-dialog {
+    background: var(--ivory-50);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 920px;
+    max-height: 94vh;
+    overflow-y: auto;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    animation: slideUpModal 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUpModal {
+    from { transform: translateY(18px) scale(0.97); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* Modal Header */
+.story-modal-header {
+    background: var(--navy-900);
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 19px 19px 0 0;
+}
+
+.story-modal-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.story-modal-meta .testament-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    color: var(--gold-400);
+}
+
+.story-modal-meta .scripture-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.65);
+    background: rgba(255, 255, 255, 0.08);
+    padding: 2px 7px;
+    border-radius: 4px;
+}
+
+.story-modal-title {
+    font-family: var(--font-sans);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--white);
+    margin: 0;
+    letter-spacing: -0.015em;
+}
+
+.story-modal-close {
+    appearance: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: var(--white);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.16s ease;
+    flex-shrink: 0;
+}
+
+.story-modal-close:hover {
+    background: var(--gold-500);
+    color: var(--navy-950);
+    border-color: var(--gold-400);
+    transform: rotate(90deg);
+}
+
+/* Cinema Stage (Video Embed) */
+.story-cinema-stage {
+    background: #000;
+    width: 100%;
+}
+
+.story-video-frame {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 ratio */
+    height: 0;
+    overflow: hidden;
+    background: #000;
+}
+
+.story-video-frame iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* Modal Content Deck (Verse & Lessons) */
+.story-modal-body {
+    padding: 24px;
+}
+
+.story-modal-deck {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+@media (max-width: 768px) {
+    .story-modal-deck {
+        grid-template-columns: 1fr;
+    }
+}
+
+.story-deck-card {
+    background: var(--white);
+    border: 1px solid var(--ivory-200);
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 2px 6px rgba(11, 25, 56, 0.04);
+}
+
+.deck-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--ivory-100);
+    padding-bottom: 8px;
+}
+
+.deck-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--navy-800);
+    text-transform: uppercase;
+}
+
+.copy-verse-btn {
+    appearance: none;
+    background: var(--ivory-100);
+    border: 1px solid var(--ivory-200);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--navy-900);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.copy-verse-btn:hover {
+    background: var(--gold-100);
+    border-color: var(--gold-400);
+    color: var(--navy-900);
+}
+
+.modal-verse-quote {
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--navy-950);
+    font-weight: 600;
+    font-style: italic;
+    margin: 10px 0 14px;
+    border-left: 4px solid var(--gold-400);
+    padding-left: 14px;
+}
+
+.modal-verse-ref {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--gold-500);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.modal-main-lesson {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--navy-900);
+    line-height: 1.5;
+    margin-bottom: 14px;
+    background: var(--ivory-50);
+    padding: 10px 14px;
+    border-radius: 8px;
+}
+
+.modal-takeaways-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.modal-takeaways-list li {
+    font-size: 13.5px;
+    color: var(--ink-700);
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.modal-takeaways-list li::before {
+    content: "✓";
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--gold-100);
+    color: var(--gold-500);
+    font-weight: 700;
+    font-size: 11px;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+/* Modal Navigation Footer */
+.story-modal-footer {
+    background: var(--white);
+    padding: 16px 24px;
+    border-top: 1px solid var(--ivory-200);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 0 0 19px 19px;
+    gap: 12px;
+}
+
+.modal-nav-btn {
+    appearance: none;
+    background: var(--ivory-100);
+    border: 1px solid var(--stone-300);
+    color: var(--navy-900);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.16s ease;
+    box-shadow: 0 2px 0 rgba(11,25,56,0.04);
+}
+
+.modal-nav-btn:hover:not(:disabled) {
+    background: var(--navy-900);
+    color: var(--gold-400);
+    border-color: var(--navy-900);
+    transform: translateY(-1px);
+}
+
+.modal-nav-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.story-index-indicator {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--ink-500);
+    text-transform: uppercase;
 }
 
 /* =========================================================

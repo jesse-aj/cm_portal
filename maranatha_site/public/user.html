@@ -55,13 +55,23 @@
         <!-- 1. Bible Stories -->
         <section id="stories" class="tab">
             <div class="section-header-block">
-                <span class="section-eyebrow">Scripture Library · NIV</span>
-                <h2>Illustrated Bible Stories</h2>
-                <p class="section-sub">Explore foundational Old and New Testament accounts. Select any story card to reveal its core lesson and memory verse.</p>
+                <span class="section-eyebrow">Scripture Library · Animated Video Theater</span>
+                <h2>Bible Stories &amp; Animated Videos</h2>
+                <p class="section-sub">Explore animated Old and New Testament accounts. Click any story card to launch the video theater, memorize the weekly verse, and discover practical life lessons.</p>
             </div>
-            <div class="stories-toolbar">
-                <input type="text" id="searchBox" placeholder="Search stories by title or book (e.g. Noah, David, Luke)...">
+            
+            <div class="stories-toolbar-wrap">
+                <div class="stories-search-bar">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input type="text" id="searchBox" placeholder="Search stories by title, scripture, or character (e.g. David, Jonah, Genesis, Matthew)...">
+                </div>
+                <div class="stories-filter-row">
+                    <button type="button" class="story-chip-btn active" data-filter="all">All Stories (11)</button>
+                    <button type="button" class="story-chip-btn" data-filter="ot">Old Testament</button>
+                    <button type="button" class="story-chip-btn" data-filter="nt">New Testament</button>
+                </div>
             </div>
+
             <ul id="bibleStoriesList"></ul>
         </section>
 
@@ -332,6 +342,75 @@
     </main>
 </div>
 
+<!-- =========================================================
+     BIBLE STORY CINEMA THEATER MODAL
+     ========================================================= -->
+<div id="storyTheaterModal" class="story-modal-backdrop" aria-hidden="true" style="display:none;">
+    <div class="story-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalStoryTitle">
+        <!-- Modal Top Bar -->
+        <header class="story-modal-header">
+            <div>
+                <div class="story-modal-meta">
+                    <span id="modalTestamentPill" class="testament-badge">Old Testament</span>
+                    <span id="modalScriptureRef" class="scripture-badge">Genesis 1:1–31</span>
+                </div>
+                <h2 id="modalStoryTitle" class="story-modal-title">The Creation of the World</h2>
+            </div>
+            <button type="button" id="closeStoryModalBtn" class="story-modal-close" title="Close Theater (Esc)" aria-label="Close">✕</button>
+        </header>
+
+        <!-- 16:9 Responsive Cinema Screen -->
+        <div class="story-cinema-stage">
+            <div class="story-video-frame">
+                <iframe id="storyVideoIframe" 
+                        src="" 
+                        title="Animated Bible Story Video" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <!-- Verse Plaque & Key Lessons Deck -->
+        <div class="story-modal-body">
+            <div class="story-modal-deck">
+                <!-- Golden Scripture Tablet -->
+                <div class="story-deck-card verse-deck-card">
+                    <div class="deck-card-header">
+                        <span class="deck-label">📖 MEMORY VERSE</span>
+                        <button type="button" id="copyVerseBtn" class="copy-verse-btn" title="Copy scripture to clipboard">
+                            <span id="copyBtnText">Copy Verse</span>
+                        </button>
+                    </div>
+                    <blockquote id="modalMemoryVerse" class="modal-verse-quote">
+                        "In the beginning God created the heavens and the earth."
+                    </blockquote>
+                    <div id="modalVerseRefBottom" class="modal-verse-ref">Genesis 1:1 · NIV</div>
+                </div>
+
+                <!-- Life Application Takeaways -->
+                <div class="story-deck-card lessons-deck-card">
+                    <div class="deck-card-header">
+                        <span class="deck-label">✨ CORE LESSON &amp; TAKEAWAYS</span>
+                    </div>
+                    <p id="modalMainLesson" class="modal-main-lesson">
+                        God is the sovereign Creator of heaven and earth. Everything He made was very good, and our lives have deep purpose in His plan.
+                    </p>
+                    <ul id="modalTakeawaysList" class="modal-takeaways-list">
+                        <!-- Populated dynamically via JS -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Footer -->
+        <footer class="story-modal-footer">
+            <button type="button" id="prevStoryBtn" class="modal-nav-btn">← Previous Story</button>
+            <span id="storyIndexIndicator" class="story-index-indicator">Story 1 of 11</span>
+            <button type="button" id="nextStoryBtn" class="modal-nav-btn">Next Story →</button>
+        </footer>
+    </div>
+</div>
+
 <script>
 // ---------------- DATE & MASTHEAD ----------------
 const dateEl = document.getElementById("todayDateDisplay");
@@ -415,70 +494,449 @@ todayDevotional.actions.forEach(action => {
     actionList.appendChild(li);
 });
 
-// ---------------- BIBLE STORIES ----------------
+// =========================================================
+// BIBLE STORIES & VIDEO THEATER
+// =========================================================
+// 💡 HOW TO CHANGE/UPDATE VIDEOS:
+// In the list below, you can paste ANY YouTube video ID (like "teu7BCZTgDs")
+// OR any full YouTube link (like "https://www.youtube.com/watch?v=teu7BCZTgDs" or "https://youtu.be/teu7BCZTgDs")
+// into the 'youtubeId' property. The player will automatically extract and play it!
 const bibleStories = [
-    { title: "The Creation", reference: "Genesis 1", lesson: "God is the sovereign Creator of heaven, earth, and all living things.", memoryVerse: "Genesis 1:1 — In the beginning God created the heavens and the earth." },
-    { title: "Noah's Ark", reference: "Genesis 6–9", lesson: "Wholehearted obedience to God brings protection and covenant blessing.", memoryVerse: "Genesis 6:22 — Noah did everything just as God commanded him." },
-    { title: "David and Goliath", reference: "1 Samuel 17", lesson: "With God on our side, no giant or challenge is too great to overcome.", memoryVerse: "1 Samuel 17:47 — For the battle is the Lord's." },
-    { title: "Daniel in the Lions' Den", reference: "Daniel 6", lesson: "Steadfast prayer and faithfulness to God deliver us in times of trial.", memoryVerse: "Daniel 6:22 — My God sent his angel, and he shut the mouths of the lions." },
-    { title: "Jesus Feeds the Five Thousand", reference: "Matthew 14:13–21", lesson: "When we place even our small gifts in Jesus' hands, He multiplies them abundantly.", memoryVerse: "Matthew 14:20 — They all ate and were satisfied." },
-    { title: "Jonah and the Great Fish", reference: "Jonah 1–3", lesson: "God is merciful and hears us when we repent and turn back to His call.", memoryVerse: "Jonah 2:2 — In my distress I called to the Lord, and he answered me." },
-    { title: "The Good Samaritan", reference: "Luke 10:25–37", lesson: "True love for God is shown through practical compassion toward anyone in need.", memoryVerse: "Luke 10:27 — Love your neighbor as yourself." },
-    { title: "Moses and the Burning Bush", reference: "Exodus 3", lesson: "God calls His people by name and equips them for His holy purpose.", memoryVerse: "Exodus 3:12 — And God said, 'I will be with you.'" },
-    { title: "The Prodigal Son", reference: "Luke 15:11–32", lesson: "Our Heavenly Father eagerly welcomes and forgives all who return home to Him.", memoryVerse: "Luke 15:24 — For this son of mine was dead and is alive again." },
-    { title: "Zacchaeus the Tax Collector", reference: "Luke 19:1–10", lesson: "Encountering Jesus transforms our hearts and restores our lives.", memoryVerse: "Luke 19:9 — Today salvation has come to this house." },
-    { title: "Peter Walks on the Water", reference: "Matthew 14:22–33", lesson: "Fix your eyes firmly on Jesus amidst the winds and waves of life.", memoryVerse: "Matthew 14:27 — Take courage! It is I. Don't be afraid." }
+    {
+        id: "creation",
+        title: "The Creation of the World",
+        testament: "ot",
+        testamentLabel: "Old Testament",
+        reference: "Genesis 1:1–31",
+        youtubeId: "teu7BCZTgDs", // Saddleback Kids: Creation
+        duration: "4 min",
+        summary: "In the beginning, God spoke the heavens, earth, seas, light, and all living creatures into being by His powerful word.",
+        lesson: "God is the sovereign Creator of heaven and earth. Everything He made was very good, and our lives have deep purpose in His plan.",
+        takeaways: [
+            "God created everything out of nothing through the power of His word.",
+            "Human beings are specially made in God's own image and dearly loved by Him.",
+            "We are called to worship the Creator and care responsibly for His world."
+        ],
+        memoryVerse: "In the beginning God created the heavens and the earth.",
+        verseRef: "Genesis 1:1 · NIV"
+    },
+    {
+        id: "noah",
+        title: "Noah's Ark & the Great Flood",
+        testament: "ot",
+        testamentLabel: "Old Testament",
+        reference: "Genesis 6:9–9:17",
+        youtubeId: "WvG9tQ2i8rY", // Saddleback Kids: Noah
+        duration: "5 min",
+        summary: "When the earth was filled with wickedness, Noah walked faithfully with God and built an ark to save his household and the animals.",
+        lesson: "Wholehearted obedience to God brings divine protection, and God always remembers His promises.",
+        takeaways: [
+            "Noah obeyed God completely, even when others mocked him.",
+            "God provides a way of salvation for all who trust in Him.",
+            "The rainbow is a perpetual sign of God's faithful covenant with all the earth."
+        ],
+        memoryVerse: "Noah did everything just as God commanded him.",
+        verseRef: "Genesis 6:22 · NIV"
+    },
+    {
+        id: "moses-bush",
+        title: "Moses & the Burning Bush",
+        testament: "ot",
+        testamentLabel: "Old Testament",
+        reference: "Exodus 3:1–15",
+        youtubeId: "6vhK_O_888E", // Saddleback Kids: Moses & Burning Bush
+        duration: "4 min",
+        summary: "In the desert at Mount Horeb, God called Moses from a bush that burned without being consumed and commissioned him to lead Israel out of bondage.",
+        lesson: "God hears our cries, calls us by name, and empowers ordinary people to accomplish His holy mission.",
+        takeaways: [
+            "God meets us right where we are and reveals His holy character.",
+            "When God gives us an assignment, He promises to be with us every step.",
+            "We don't rely on our own eloquence or strength, but on God's almighty presence."
+        ],
+        memoryVerse: "And God said, 'I will be with you.'",
+        verseRef: "Exodus 3:12 · NIV"
+    },
+    {
+        id: "david-goliath",
+        title: "David & Goliath the Giant",
+        testament: "ot",
+        testamentLabel: "Old Testament",
+        reference: "1 Samuel 17:1–50",
+        youtubeId: "R9K1xLz4tU0", // Saddleback Kids: David and Goliath
+        duration: "5 min",
+        summary: "Armed only with a shepherd's sling, five smooth stones, and faith in the living God, young David brought down the Philistine champion.",
+        lesson: "When we face giants in life, the battle belongs to the Lord. God looks at the courage and faith of our hearts.",
+        takeaways: [
+            "David knew that God was infinitely greater than any giant or problem.",
+            "Faith does not focus on fear; faith focuses on God's previous deliverances.",
+            "God honors those who stand up boldly for His name and His people."
+        ],
+        memoryVerse: "All those gathered here will know that it is not by sword or spear that the Lord saves; for the battle is the Lord's.",
+        verseRef: "1 Samuel 17:47 · NIV"
+    },
+    {
+        id: "daniel-lions",
+        title: "Daniel in the Lions' Den",
+        testament: "ot",
+        testamentLabel: "Old Testament",
+        reference: "Daniel 6:1–28",
+        youtubeId: "bEmzcTJNVvU", // Saddleback Kids: Daniel in the Lions' Den
+        duration: "4 min",
+        summary: "Refusing to compromise his devotion to God, Daniel continued praying three times a day and was thrown into a den of hungry lions.",
+        lesson: "Steadfast faith and daily prayer give us supernatural strength, and God can shut the mouths of any danger.",
+        takeaways: [
+            "Daniel valued his relationship with God more than human approval or royal decree.",
+            "God sent His angel to protect Daniel through the long night.",
+            "Our faithfulness during trials can lead an entire kingdom to praise God."
+        ],
+        memoryVerse: "My God sent his angel, and he shut the mouths of the lions. They have not hurt me.",
+        verseRef: "Daniel 6:22 · NIV"
+    },
+    {
+        id: "jonah",
+        title: "Jonah & the Great Fish",
+        testament: "ot",
+        testamentLabel: "Old Testament",
+        reference: "Jonah 1:1–3:10",
+        youtubeId: "WOSadLyqreQ", // Saddleback Kids: Jonah
+        duration: "5 min",
+        summary: "Jonah ran from God's instruction to preach in Nineveh, but inside the belly of a great fish, he repented and learned of God's boundless mercy.",
+        lesson: "You can never outrun God's presence, and His heart is always ready to forgive anyone who repents.",
+        takeaways: [
+            "Running from God's will always leads downward, but crying to Him brings restoration.",
+            "God gives second chances to His servants and extends mercy to all nations.",
+            "We should rejoice when others receive God's love and forgiveness."
+        ],
+        memoryVerse: "In my distress I called to the Lord, and he answered me.",
+        verseRef: "Jonah 2:2 · NIV"
+    },
+    {
+        id: "jesus-5000",
+        title: "Jesus Feeds the Five Thousand",
+        testament: "nt",
+        testamentLabel: "New Testament",
+        reference: "Matthew 14:13–21",
+        youtubeId: "S6rj9cAJrWE", // Saddleback Kids: Jesus Feeds 5000
+        duration: "4 min",
+        summary: "When a huge crowd was hungry in a remote place, a boy offered five small loaves and two fish, which Jesus multiplied to feed everyone abundantly.",
+        lesson: "No gift is too small when placed in Jesus' hands. He cares about our practical needs and provides with excess.",
+        takeaways: [
+            "Jesus looks upon crowds with deep compassion, not annoyance.",
+            "When we bring whatever little we have to Jesus, He multiplies it beyond imagination.",
+            "Trusting Jesus in moments of scarcity reveals His miraculous abundance."
+        ],
+        memoryVerse: "They all ate and were satisfied, and the disciples picked up twelve basketfuls of broken pieces that were left over.",
+        verseRef: "Matthew 14:20 · NIV"
+    },
+    {
+        id: "peter-water",
+        title: "Peter Walks on the Water",
+        testament: "nt",
+        testamentLabel: "New Testament",
+        reference: "Matthew 14:22–33",
+        youtubeId: "oSub4TkahjI", // Saddleback Kids: Peter Walks on Water
+        duration: "4 min",
+        summary: "During a fierce storm on the Sea of Galilee, Jesus walked across the waves and invited Peter to step out of the boat in faith.",
+        lesson: "Keep your eyes fixed on Jesus. Even when the winds blow and doubt creeps in, His hand is immediately there to catch you.",
+        takeaways: [
+            "Peter had the courage to step out of the boat when Jesus called him.",
+            "When Peter looked at the waves instead of Jesus, he began to sink.",
+            "The moment we cry 'Lord, save me!', Jesus immediately reaches out His hand."
+        ],
+        memoryVerse: "Take courage! It is I. Don't be afraid.",
+        verseRef: "Matthew 14:27 · NIV"
+    },
+    {
+        id: "good-samaritan",
+        title: "The Parable of the Good Samaritan",
+        testament: "nt",
+        testamentLabel: "New Testament",
+        reference: "Luke 10:25–37",
+        youtubeId: "MLydcGnW00E", // Saddleback Kids: The Good Samaritan
+        duration: "4 min",
+        summary: "Jesus taught that our true neighbor is anyone in need, illustrated through an unlikely Samaritan who stopped to bandage and care for a wounded stranger.",
+        lesson: "Love for God must be demonstrated in active, compassionate action toward those who are hurting or overlooked.",
+        takeaways: [
+            "True faith is not just religious knowledge; it is mercy in action.",
+            "We should show kindness across all social, racial, and cultural divides.",
+            "Jesus calls us: 'Go and do likewise.'"
+        ],
+        memoryVerse: "Love the Lord your God with all your heart... and love your neighbor as yourself.",
+        verseRef: "Luke 10:27 · NIV"
+    },
+    {
+        id: "prodigal-son",
+        title: "The Parable of the Prodigal Son",
+        testament: "nt",
+        testamentLabel: "New Testament",
+        reference: "Luke 15:11–32",
+        youtubeId: "DJgRO3TbpUQ", // Saddleback Kids: The Prodigal Son
+        duration: "5 min",
+        summary: "A runaway son squandered his inheritance, but when he returned home broken and repentant, his father ran to embrace him with joyous celebration.",
+        lesson: "Our Heavenly Father never gives up on us. He welcomes every repentant child home with unconditional love and grace.",
+        takeaways: [
+            "Sin leads to emptiness, but turning back to God brings instant restoration.",
+            "The Father does not wait for us with anger; He runs to embrace us with mercy.",
+            "Heaven rejoices whenever one lost child comes home to God."
+        ],
+        memoryVerse: "For this son of mine was dead and is alive again; he was lost and is found.",
+        verseRef: "Luke 15:24 · NIV"
+    },
+    {
+        id: "zacchaeus",
+        title: "Zacchaeus the Tax Collector",
+        testament: "nt",
+        testamentLabel: "New Testament",
+        reference: "Luke 19:1–10",
+        youtubeId: "5BjtbJFz2Ec", // Saddleback Kids: Zacchaeus
+        duration: "4 min",
+        summary: "Short in stature, Zacchaeus climbed a sycamore-fig tree to see Jesus. Jesus called him by name, stayed at his home, and transformed his life.",
+        lesson: "Jesus sees every individual, knows your name, and came to seek and save the lost.",
+        takeaways: [
+            "Nothing can keep a seeking heart from encountering Jesus.",
+            "Jesus looks past people's mistakes and sees their potential for transformation.",
+            "A true encounter with Christ produces generosity and a renewed heart."
+        ],
+        memoryVerse: "Today salvation has come to this house... For the Son of Man came to seek and to save the lost.",
+        verseRef: "Luke 19:9–10 · NIV"
+    }
 ];
+
+// Helper: extracts the 11-char YouTube ID whether a full URL or ID is provided
+function parseYouTubeId(input) {
+    if (!input) return "";
+    input = String(input).trim();
+    if (input.length === 11 && !input.includes("/") && !input.includes(".")) return input;
+    const match = input.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+    return match ? match[1] : input;
+}
 
 const storyList = document.getElementById("bibleStoriesList");
 const searchBox = document.getElementById("searchBox");
+let currentStoryFilter = "all";
+let currentModalIndex = -1;
+let visibleStoryIndices = [];
 
-function renderStories(filter = "") {
+function renderStories() {
+    if (!storyList) return;
     storyList.innerHTML = "";
-    const q = filter.toLowerCase();
-    bibleStories
-        .filter(s => s.title.toLowerCase().includes(q) || s.reference.toLowerCase().includes(q))
-        .forEach(story => {
-            const li = document.createElement("li");
+    const q = (searchBox?.value || "").toLowerCase().trim();
 
-            const header = document.createElement("div");
-            header.className = "story-card-header";
+    visibleStoryIndices = [];
 
-            const titleSpan = document.createElement("span");
-            titleSpan.className = "story-title";
-            titleSpan.textContent = story.title;
+    bibleStories.forEach((story, idx) => {
+        // Filter by testament category
+        if (currentStoryFilter === "ot" && story.testament !== "ot") return;
+        if (currentStoryFilter === "nt" && story.testament !== "nt") return;
 
-            const refPill = document.createElement("span");
-            refPill.className = "story-ref-pill";
-            refPill.textContent = story.reference;
+        // Filter by search text
+        if (q) {
+            const matchTitle = story.title.toLowerCase().includes(q);
+            const matchRef = story.reference.toLowerCase().includes(q);
+            const matchLesson = story.lesson.toLowerCase().includes(q);
+            const matchVerse = story.memoryVerse.toLowerCase().includes(q);
+            if (!matchTitle && !matchRef && !matchLesson && !matchVerse) return;
+        }
 
-            header.append(titleSpan, refPill);
+        visibleStoryIndices.push(idx);
 
-            const hint = document.createElement("span");
-            hint.className = "story-hint";
-            hint.textContent = "READ LESSON & VERSE →";
+        const ytid = parseYouTubeId(story.youtubeId);
+        const thumbUrl = ytid 
+            ? `https://img.youtube.com/vi/${ytid}/hqdefault.jpg` 
+            : `images/sky.jpg`;
 
-            const contentDiv = document.createElement("div");
-            contentDiv.className = "story-content";
-            contentDiv.style.display = "none";
-            contentDiv.innerHTML = `
-                <p><strong>Key Lesson:</strong> ${story.lesson}</p>
-                <div class="story-verse-box">${story.memoryVerse}</div>
-            `;
+        const li = document.createElement("li");
+        li.className = "story-card-3d";
+        li.setAttribute("role", "button");
+        li.setAttribute("tabindex", "0");
+        li.setAttribute("aria-label", `Watch ${story.title}`);
 
-            li.append(header, hint, contentDiv);
-            storyList.appendChild(li);
+        li.innerHTML = `
+            <div class="story-thumb-wrap">
+                <img class="story-thumb-img" src="${thumbUrl}" alt="${story.title}" loading="lazy" onerror="this.src='images/sky.jpg'">
+                <div class="story-thumb-overlay">
+                    <div class="story-play-badge">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+                    </div>
+                </div>
+                <div class="story-badge-top-left">
+                    <span class="story-testament-pill ${story.testament}">${story.testamentLabel}</span>
+                    <span class="story-ref-chip">${story.reference}</span>
+                </div>
+                <span class="story-duration-pill">▶ ${story.duration}</span>
+            </div>
 
-            li.addEventListener("click", () => {
-                const isOpen = contentDiv.style.display === "block";
-                contentDiv.style.display = isOpen ? "none" : "block";
-                hint.textContent = isOpen ? "READ LESSON & VERSE →" : "HIDE LESSON ↑";
-            });
+            <div class="story-card-body">
+                <div>
+                    <h3 class="story-card-title">${story.title}</h3>
+                    <p class="story-card-desc">${story.summary}</p>
+                </div>
+
+                <div>
+                    <div class="story-verse-preview">
+                        <strong>Memory Verse Preview</strong>
+                        "${story.memoryVerse}"
+                    </div>
+
+                    <button type="button" class="story-card-btn">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+                        <span>Watch Video &amp; Lessons</span>
+                    </button>
+                </div>
+            </div>
+        `;
+
+        li.addEventListener("click", () => openStoryModal(idx));
+        li.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                openStoryModal(idx);
+            }
         });
+
+        storyList.appendChild(li);
+    });
+
+    if (visibleStoryIndices.length === 0) {
+        storyList.innerHTML = `
+            <li style="grid-column: 1 / -1; background: var(--white); border-radius: 14px; padding: 40px; text-align: center; border: 1px dashed var(--stone-300);">
+                <p style="font-size: 16px; font-weight: 600; color: var(--navy-900); margin-bottom: 6px;">No Bible stories found</p>
+                <p style="font-size: 13px; color: var(--ink-500);">Try searching for another character like "David", "Jonah", or "Moses".</p>
+            </li>
+        `;
+    }
 }
 
+// Category filter chip handling
+document.querySelectorAll(".story-chip-btn").forEach(btn => {
+    btn.addEventListener("click", function() {
+        document.querySelectorAll(".story-chip-btn").forEach(b => b.classList.remove("active"));
+        this.classList.add("active");
+        currentStoryFilter = this.getAttribute("data-filter") || "all";
+        renderStories();
+    });
+});
+
+if (searchBox) {
+    searchBox.addEventListener("input", renderStories);
+}
+
+// ---------------- STORY CINEMA THEATER MODAL ----------------
+const storyModal = document.getElementById("storyTheaterModal");
+const modalIframe = document.getElementById("storyVideoIframe");
+const modalTitle = document.getElementById("modalStoryTitle");
+const modalTestament = document.getElementById("modalTestamentPill");
+const modalRef = document.getElementById("modalScriptureRef");
+const modalVerse = document.getElementById("modalMemoryVerse");
+const modalVerseRefBottom = document.getElementById("modalVerseRefBottom");
+const modalMainLesson = document.getElementById("modalMainLesson");
+const modalTakeawaysList = document.getElementById("modalTakeawaysList");
+const storyIndexIndicator = document.getElementById("storyIndexIndicator");
+const prevStoryBtn = document.getElementById("prevStoryBtn");
+const nextStoryBtn = document.getElementById("nextStoryBtn");
+const copyVerseBtn = document.getElementById("copyVerseBtn");
+const copyBtnText = document.getElementById("copyBtnText");
+const closeStoryModalBtn = document.getElementById("closeStoryModalBtn");
+
+function openStoryModal(index) {
+    if (!bibleStories[index]) return;
+    currentModalIndex = index;
+    const story = bibleStories[index];
+
+    modalTitle.textContent = story.title;
+    modalTestament.textContent = story.testamentLabel;
+    modalTestament.className = `testament-badge ${story.testament}`;
+    modalRef.textContent = story.reference;
+
+    // Load video embed with autoplay
+    const ytid = parseYouTubeId(story.youtubeId);
+    if (ytid) {
+        modalIframe.src = `https://www.youtube-nocookie.com/embed/${ytid}?autoplay=1&rel=0&modestbranding=1`;
+    } else {
+        modalIframe.src = "";
+    }
+
+    modalVerse.textContent = `"${story.memoryVerse}"`;
+    modalVerseRefBottom.textContent = story.verseRef;
+    modalMainLesson.textContent = story.lesson;
+
+    modalTakeawaysList.innerHTML = "";
+    story.takeaways.forEach(point => {
+        const li = document.createElement("li");
+        li.textContent = point;
+        modalTakeawaysList.appendChild(li);
+    });
+
+    storyIndexIndicator.textContent = `Story ${index + 1} of ${bibleStories.length}`;
+    prevStoryBtn.disabled = index === 0;
+    nextStoryBtn.disabled = index === bibleStories.length - 1;
+
+    storyModal.style.display = "flex";
+    storyModal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden"; // Prevent background scroll
+}
+
+function closeStoryModal() {
+    if (!storyModal) return;
+    storyModal.style.display = "none";
+    storyModal.setAttribute("aria-hidden", "true");
+    modalIframe.src = ""; // Stop video playback immediately
+    document.body.style.overflow = "";
+    currentModalIndex = -1;
+}
+
+if (closeStoryModalBtn) {
+    closeStoryModalBtn.addEventListener("click", closeStoryModal);
+}
+
+if (storyModal) {
+    storyModal.addEventListener("click", (e) => {
+        if (e.target === storyModal) closeStoryModal();
+    });
+}
+
+if (prevStoryBtn) {
+    prevStoryBtn.addEventListener("click", () => {
+        if (currentModalIndex > 0) openStoryModal(currentModalIndex - 1);
+    });
+}
+
+if (nextStoryBtn) {
+    nextStoryBtn.addEventListener("click", () => {
+        if (currentModalIndex < bibleStories.length - 1) openStoryModal(currentModalIndex + 1);
+    });
+}
+
+// Copy verse to clipboard with instant tactile feedback
+if (copyVerseBtn) {
+    copyVerseBtn.addEventListener("click", () => {
+        if (currentModalIndex === -1) return;
+        const story = bibleStories[currentModalIndex];
+        const textToCopy = `"${story.memoryVerse}" — ${story.verseRef}`;
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            if (copyBtnText) copyBtnText.textContent = "✅ Copied!";
+            copyVerseBtn.style.background = "var(--gold-400)";
+            copyVerseBtn.style.color = "var(--navy-950)";
+            setTimeout(() => {
+                if (copyBtnText) copyBtnText.textContent = "Copy Verse";
+                copyVerseBtn.style.background = "";
+                copyVerseBtn.style.color = "";
+            }, 2000);
+        });
+    });
+}
+
+// Keyboard shortcuts for theater modal (Esc, ArrowLeft, ArrowRight)
+window.addEventListener("keydown", (e) => {
+    if (storyModal && storyModal.style.display === "flex") {
+        if (e.key === "Escape") closeStoryModal();
+        if (e.key === "ArrowLeft" && currentModalIndex > 0) openStoryModal(currentModalIndex - 1);
+        if (e.key === "ArrowRight" && currentModalIndex < bibleStories.length - 1) openStoryModal(currentModalIndex + 1);
+    }
+});
+
+// Initial render
 renderStories();
-searchBox.addEventListener("input", () => renderStories(searchBox.value));
 
 // ---------------- CHRISTIAN GAMES ----------------
 const gameContainer = document.getElementById('gameContainer');
